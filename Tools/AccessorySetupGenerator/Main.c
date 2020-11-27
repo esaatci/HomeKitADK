@@ -11,7 +11,6 @@
 
 int main(int argc, char* argv[]) {
     HAPError err;
-
     if (argc <= 1) {
 
 #ifndef _WIN32

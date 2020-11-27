@@ -26,7 +26,7 @@ ifeq ($(TARGET),Raspi)
 	DOCKERFILE := Build/Docker/Dockerfile.Raspi
 endif
 
-ENABLE_TTY =
+ENABLE_TTY = sha256:f21643a553acfc8f103172cd7ecd5e4fc3d536cf75e89dce27bd2e6bbc196e05
 MAKE_DOCKER = $(DOCKER_EXE) build - < $(DOCKERFILE) | tee /dev/stderr | grep "Successfully built" | cut -d ' ' -f 3
 RUN = $(DOCKER_EXE) run \
   -e APPS \

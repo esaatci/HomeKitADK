@@ -7,6 +7,7 @@
 #include "App.h"
 #include "DB.h"
 
+
 #include "HAP.h"
 #include "HAPPlatform+Init.h"
 #include "HAPPlatformAccessorySetup+Init.h"
@@ -281,7 +282,7 @@ int main(int argc HAP_UNUSED, char* _Nullable argv[_Nullable] HAP_UNUSED) {
     HAPAssert(HAPGetCompatibilityVersion() == HAP_COMPATIBILITY_VERSION);
     // Initialize global platform objects.
     InitializePlatform();
-    HAPLogInfo(&kHAPLog_Default, "platform init complete");
+    HAPLogInfo(&kHAPLog_Default, "This is Yakamoz");
 
 #if IP
     InitializeIP();
@@ -292,9 +293,6 @@ int main(int argc HAP_UNUSED, char* _Nullable argv[_Nullable] HAP_UNUSED) {
     InitializeBLE();
 #endif
 
-    // Perform Application-specific initalizations such as setting up callbacks
-    // and configure any additional unique platform dependencies
-    AppInitialize(&platform.hapAccessoryServerOptions, &platform.hapPlatform, &platform.hapAccessoryServerCallbacks);
     HAPLogInfo(&kHAPLog_Default, "app init complete");
 
     // Initialize accessory server.
@@ -309,11 +307,14 @@ int main(int argc HAP_UNUSED, char* _Nullable argv[_Nullable] HAP_UNUSED) {
     // Create app object.
     AppCreate(&accessoryServer, &platform.keyValueStore);
     HAPLogInfo(&kHAPLog_Default, "application created");
+    // Perform Application-specific initalizations such as setting up callbacks
+    // and configure any additional unique platform dependencies
+    AppInitialize(&platform.hapAccessoryServerOptions, &platform.hapPlatform, &platform.hapAccessoryServerCallbacks);
 
     // Start accessory server for App.
     AppAccessoryServerStart();
     HAPLogInfo(&kHAPLog_Default, "server started");
-
+    HAPLogInfo(&kHAPLog_Default, "the value of the color is %d", getState());
     // Run main loop until explicitly stopped.
     HAPPlatformRunLoopRun();
 

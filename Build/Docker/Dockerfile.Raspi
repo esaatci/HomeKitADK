@@ -1,6 +1,15 @@
 # Build stage
 FROM dev-test/raspiadk-base as build
 
+# Disable the interactive mode
+ENV DEBIAN_FRONTEND noninteractive
+# install the GPIO library for Raspi
+RUN wget https://github.com/joan2937/pigpio/archive/master.zip && unzip master.zip \
+    && sudo apt-get install python3-pip -y
+
+WORKDIR pigpio-master
+RUN make && sudo make install
+
 WORKDIR /build
 
 # Only package the build image. The built image won't have any test artifacts in it

@@ -14,8 +14,9 @@ CFLAGS_Raspi += -DLED_TRIGGER=\"/sys/class/leds/led0/trigger\"
 CFLAGS_Raspi += -DRPI
 CFLAGS_Raspi += -I/opt/vc/include
 
-LDFLAGS_Raspi := -L/opt/vc/lib
-LDFLAGS_Raspi += -ldns_sd -lsqlite3 -pthread -lasound -lopus -lfaac -lm -lnfc
+
+LDFLAGS_Raspi := -L/opt/vc/lib -L/usr/local/lib
+LDFLAGS_Raspi += -ldns_sd -lsqlite3 -pthread -lasound -lopus -lfaac -lm -lnfc -lpigpio
 LDFLAGS_Raspi += -lbcm_host -lmmal -lmmal_core -lmmal_components -lmmal_util -lvcos
 ifeq ($(BUILD_TYPE),Release)
     LDFLAGS_Raspi += -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all

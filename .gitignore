@@ -20,3 +20,16 @@ export/
 # Documentation related
 Documentation/_api_docs/
 Documentation/api_docs/
+
+# cscope
+cscope.out
+
+# vscode
+.vscode
+
+# raspberry image
+Tools/raspberry_homekit
+
+# caches
+Tools/.cache
+Tools/.ssh_temp

@@ -2,38 +2,69 @@
 #include "LightBulb.h"
 
 #define TEST_PIN 17
+#define HIGH 1
+#define LOW 0
+#define NUM_BULBS 1
+#define bulb(x) controller.bulbs[(x)]
 
-// static struct {
-//   // arr to hold lightBulbs
-//   // number of Ligthbulbss
-// } LightController;
+extern LightBulb bulbOne;
+
+typedef struct {
+  LightBulb *bulbs[NUM_BULBS];
+} LightController;
+
+static LightController controller = {
+  .bulbs = { &bulbOne }
+};
 
 
-static int32_t state = LOW;
+HAPError LigthControllerInit(void) {
+  int i;
+  HAPError err;
 
-int32_t LigthControllerInit(void) {
-  int32_t gpioInit;
   if (gpioInitialise() < 0) {
-    return 1;
+    return kHAPError_OutOfResources;
   }
-  if ((gpioInit = gpioSetMode(TEST_PIN, PI_OUTPUT)) == PI_BAD_GPIO || gpioInit == PI_BAD_MODE) {
-    return 1;
+  for (i = 0; i < NUM_BULBS; i++) {
+    err = bulb(i)->init();
+    if (err) {
+      return err;
+    }
   }
-
-  return 0;
+  return kHAPError_None;
 }
 
-int32_t LigthControllerTest(void) {
-  int32_t w;
-
-  state = !state;
-  if ((w = gpioWrite(TEST_PIN, state) == PI_BAD_GPIO) || w == PI_BAD_LEVEL) {
-    return 1;
+HAPError LightControllerToggle(int32_t ledNum) {
+  if (ledNum >= NUM_BULBS) {
+    return kHAPError_InvalidData;
   }
-
-  return 0;
+  return bulb(ledNum)->toggle();
 }
 
-void LigthControllerDeInit(void) {
+HAPError LigthControllerDeInit(void) {
+
+  int i;
+  HAPError err;
+  for (i = 0; i < NUM_BULBS; i++) {
+    err = bulb(i)->deInit();
+    if (err) {
+      return err;
+    }
+  }
   gpioTerminate();
+  return kHAPError_None;
+}
+
+HAPError LightControllerSetColor(int32_t ledNum, int32_t color) {
+  if (ledNum >= NUM_BULBS) {
+    return kHAPError_InvalidData;
+  }
+  return bulb(ledNum)->setColor(color);
+}
+
+HAPError LightControllerSetBrightness(int32_t ledNum, int32_t brightness) {
+  if (ledNum >= NUM_BULBS) {
+    return kHAPError_InvalidData;
+  }
+  return bulb(ledNum)->setBrightness(brightness);
 }

@@ -7,15 +7,13 @@ extern "C" {
 
 #include "HAP.h"
 
-#define HIGH 1
-#define LOW 0
 
 #if __has_feature(nullability)
 #pragma clang assume_nonnull begin
 #endif
 
 
-typedef struct {
+struct LightBulb {
   bool on;
 
   int32_t brightness;
@@ -23,9 +21,9 @@ typedef struct {
   int32_t color;
 
   struct {
-    int8_t minimumValue;
-    int8_t maximumValue;
-    int8_t stepValue;
+    int32_t minimumValue;
+    int32_t maximumValue;
+    int32_t stepValue;
   } colorConstraints;
 
   struct {
@@ -40,7 +38,9 @@ typedef struct {
   HAPError (* setBrightness)(int32_t brigthness);
   HAPError (* setColor)(int32_t color);
 
-} LightBulb;
+};
+
+typedef struct LightBulb LightBulb;
 
 
 #if __has_feature(nullability)

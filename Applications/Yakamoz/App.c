@@ -31,9 +31,7 @@
 #include "DB.h"
 #include "LightController.h"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// int LigthControllerInit(void);
-// int LigthControllerTest(void);
-// void LigthControllerDeInit(void);
+#define BULB_ONE 0
 
 /**
  * Domain used in the key value store for application data.
@@ -178,7 +176,7 @@ HAPError HandleLightBulbOnWrite(
     HAPLogInfo(&kHAPLog_Default, "%s: %s", __func__, value ? "true" : "false");
     if (accessoryConfiguration.state.lightBulbOn != value) {
         accessoryConfiguration.state.lightBulbOn = value;
-        LigthControllerTest();
+        LightControllerToggle(BULB_ONE);
         SaveAccessoryState();
 
         HAPAccessoryServerRaiseEvent(server, request->characteristic, request->service, request->accessory);
